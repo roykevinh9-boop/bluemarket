@@ -1,0 +1,235 @@
+@startuml
+title BLUE MARKET - DIAGRAMA DE CLASES
+Implementación para NetBeans
+top to bottom direction
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam linetype ortho
+skinparam nodesep 35
+skinparam ranksep 45
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #EFF6FF
+skinparam classBorderColor #175BB5
+skinparam classArrowColor #112B53
+skinparam classFontColor #1C2F49
+hide empty members
+
+abstract class Usuario {
+  -dni: String
+  -nombres: String
+  -telefono: String
+  +getNombres(): String
+  +getTelefono(): String
+}
+class Cliente {
+  -direccion: String
+  -carrito: CarritoCompra
+  +getDireccion(): String
+  +setDireccion(direccion: String): void
+  +obtenerCarrito(inventario: Inventario): CarritoCompra
+}
+class Administrador {
+  -codigoEmpleado: String
+  +gestionarProductos(servicio: InventarioService): List<Producto>
+  +gestionarInventario(servicio: InventarioService, id: long, cantidad: int): void
+  +consultarPedidos(servicio: PedidoService): List<Pedido>
+  +asignarRepartidor(servicio: PedidoService, pedido: Pedido, repartidor: Repartidor): void
+  +generarReporte(servicio: PedidoService): Reporte
+}
+class Repartidor {
+  -placaVehiculo: String
+  +consultarPedidos(servicio: PedidoService): List<Pedido>
+  +aceptarPedido(servicio: PedidoService, pedido: Pedido): void
+  +confirmarEntrega(servicio: PedidoService, pedido: Pedido): void
+}
+class CarritoCompra {
+  -productos: Map<Long, Integer>
+  -inventario: Inventario
+  +agregarProducto(id: long, cantidad: int): void
+  +quitarProducto(id: long): void
+  +calcularSubtotal(): BigDecimal
+  +vaciarCarrito(): void
+}
+class Producto {
+  -id: long
+  -nombre: String
+  -categoria: String
+  -precio: BigDecimal
+  -stock: int
+  +actualizarStock(cantidad: int): void
+  +disminuirStock(cantidad: int): void
+}
+class Inventario {
+  -productos: List<Producto>
+  +listarProductos(): List<Producto>
+  +buscarProducto(id: long): Producto
+  +agregarProducto(producto: Producto): void
+  +actualizarStock(id: long, cantidad: int): void
+}
+class Pedido {
+  -id: long
+  -cliente: Cliente
+  -direccionEntrega: String
+  -fechaRegistro: LocalDateTime
+  -estado: EstadoPedido
+  -repartidor: Repartidor
+  -detalles: List<DetallePedido>
+  -pago: IPago
+  -observadores: List<ObservadorPedido>
+  +getSubtotal(): BigDecimal
+  +getTotal(): BigDecimal
+  +setEstado(nuevo: EstadoPedido): void
+  +asignarRepartidor(repartidor: Repartidor): void
+  +agregarObservador(observador: ObservadorPedido): void
+  +quitarObservador(observador: ObservadorPedido): void
+}
+class DetallePedido {
+  -producto: Producto
+  -cantidad: int
+  -precioUnitario: BigDecimal
+  +getSubtotal(): BigDecimal
+}
+enum EstadoPedido {
+  REGISTRADO
+  EN_PREPARACION
+  EN_CAMINO
+  ENTREGADO
+}
+interface IPago {
+  +procesarPago(monto: BigDecimal): boolean
+  +revisarEstadoPago(): boolean
+}
+class PagoTarjeta {
+  -referencia: String
+  -aprobado: boolean
+  +procesarPago(monto: BigDecimal): boolean
+  +revisarEstadoPago(): boolean
+}
+class PagoEfectivo {
+  -montoRecibido: BigDecimal
+  -aprobado: boolean
+  +procesarPago(monto: BigDecimal): boolean
+  +revisarEstadoPago(): boolean
+}
+class Proveedor {
+  -idProveedor: long
+  -nombre: String
+  -ruc: String
+  -productos: List<Producto>
+  +asociarProducto(producto: Producto): void
+  +consultarProductos(): List<Producto>
+}
+class Reporte {
+  -idReporte: long
+  -fechaGeneracion: LocalDateTime
+  -tipo: String
+  -contenido: String
+  +generarReporte(): String
+  +imprimirReporte(): boolean
+}
+class PedidoService {
+  -inventarioService: InventarioService
+  -repositorio: PedidoRepositoryMemoria
+  +crearPedido(cliente: Cliente, carrito: CarritoCompra, pago: IPago): Pedido
+  +listarPedidos(): List<Pedido>
+  +prepararPedido(pedido: Pedido): void
+  +asignarRepartidor(pedido: Pedido, repartidor: Repartidor): void
+  +cambiarEstado(pedido: Pedido, nuevo: EstadoPedido): void
+  +marcarEnCamino(pedido: Pedido, repartidor: Repartidor): void
+  +confirmarEntrega(pedido: Pedido, repartidor: Repartidor): void
+}
+class InventarioService {
+  -inventario: Inventario
+  +listarProductos(): List<Producto>
+  +agregarProducto(producto: Producto): void
+  +actualizarStock(id: long, cantidad: int): void
+}
+interface ObservadorPedido {
+  +alCambiarEstado(pedido: Pedido, anterior: EstadoPedido, nuevo: EstadoPedido): void
+}
+interface ObservadorListaPedidos {
+  +alActualizarListaPedidos(): void
+}
+class PedidoRepositoryMemoria {
+  -pedidos: List<Pedido>
+  +guardar(pedido: Pedido): void
+  +listarTodos(): List<Pedido>
+  +notificarLista(): void
+}
+class VentanaInicio <<JFrame>> {
+  +iniciarSesion(): void
+  +abrirCliente(): void
+  +abrirAdministrador(): void
+  +abrirRepartidor(): void
+}
+class VentanaCliente <<JFrame>> {
+  -carrito: CarritoCompra
+  +mostrarCatalogo(): void
+  +agregarACarrito(): void
+  +confirmarCarrito(): void
+  +alCambiarEstado(pedido: Pedido, anterior: EstadoPedido, nuevo: EstadoPedido): void
+}
+class VentanaAdministrador <<JFrame>> {
+  +mostrarProductos(): void
+  +agregarProducto(): void
+  +actualizarStock(): void
+  +prepararPedido(): void
+  +asignarRepartidor(): void
+  +generarReporte(): void
+}
+class VentanaRepartidor <<JFrame>> {
+  +mostrarPedidosAsignados(): void
+  +marcarEnCamino(): void
+  +confirmarEntrega(): void
+}
+class PanelPedidos <<JPanel>>
+class TemaAzul <<utility>>
+
+Usuario <|-- Cliente
+Usuario <|-- Administrador
+Usuario <|-- Repartidor
+IPago <|.. PagoTarjeta
+IPago <|.. PagoEfectivo
+Cliente "1" -- "0..*" Pedido : realiza
+Cliente "1" -- "0..1" CarritoCompra : utiliza
+Repartidor "0..1" -- "0..*" Pedido : entrega
+Pedido "1" *-- "1..*" DetallePedido : contiene
+DetallePedido "0..*" --> "1" Producto : referencia
+Pedido --> EstadoPedido
+Pedido "1" --> "1" IPago : modalidad
+Inventario "1" o-- "0..*" Producto : almacena
+CarritoCompra --> Inventario : consulta por ID
+Proveedor "0..*" -- "0..*" Producto : suministra
+Administrador ..> Reporte : genera
+Reporte ..> Pedido : resume
+Pedido --> "0..*" ObservadorPedido : notifica
+ObservadorPedido <|.. VentanaCliente
+ObservadorPedido <|.. PedidoRepositoryMemoria
+ObservadorListaPedidos <|.. PanelPedidos
+ObservadorListaPedidos <|.. VentanaCliente
+PedidoRepositoryMemoria --> "0..*" ObservadorListaPedidos : notifica
+PedidoRepositoryMemoria --> "0..*" Pedido : registra
+PedidoService --> PedidoRepositoryMemoria
+PedidoService --> InventarioService
+InventarioService --> Inventario
+VentanaInicio --> VentanaCliente : abre
+VentanaInicio --> VentanaAdministrador : abre
+VentanaInicio --> VentanaRepartidor : abre
+VentanaCliente --> CarritoCompra
+VentanaCliente --> Cliente
+VentanaAdministrador --> Administrador
+VentanaRepartidor --> Repartidor
+VentanaCliente --> PedidoService
+VentanaAdministrador --> PedidoService
+VentanaRepartidor --> PedidoService
+VentanaCliente --> InventarioService
+VentanaAdministrador --> InventarioService
+VentanaCliente --> PanelPedidos
+VentanaAdministrador --> PanelPedidos
+VentanaRepartidor --> PanelPedidos
+PanelPedidos --> PedidoService
+VentanaInicio ..> TemaAzul
+VentanaCliente ..> TemaAzul
+VentanaAdministrador ..> TemaAzul
+VentanaRepartidor ..> TemaAzul
+@enduml
