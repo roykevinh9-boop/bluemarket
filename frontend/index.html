@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123678">
+  <meta name="description" content="Compra abarrotes, moda y electrodomésticos en el catálogo de demostración de BlueMarket.">
+  <title>BlueMarket | Tu supermercado online</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="productos.js" defer></script>
+  <script src="catalogo.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#catalogo">Ir al catálogo</a>
+  <div class="topbar">
+    <div class="wrap top-inner">
+      <span><i data-icon="truck"></i> Delivery de demostración en Lima</span>
+      <div class="top-actions">
+        <button type="button" data-action="orders"><i data-icon="package"></i> Mis pedidos</button>
+        <button type="button" data-action="profiles">Perfiles de demo</button>
+      </div>
+    </div>
+  </div>
+  <header>
+    <div class="wrap head">
+      <a class="brand" href="#" aria-label="BlueMarket, inicio">
+        <span class="brand-icon"><i data-icon="basket"></i></span>
+        <span>Blue<span>Market</span></span>
+      </a>
+      <form id="search-form" role="search">
+        <input id="search" type="search" placeholder="Buscar productos y marcas" aria-label="Buscar productos" autocomplete="off">
+        <button aria-label="Buscar" title="Buscar"><i data-icon="search"></i></button>
+      </form>
+      <div class="head-actions">
+        <button class="favorite-button" type="button" data-action="favorites" aria-label="Favoritos" aria-pressed="false"><i data-icon="heart"></i><span>Favoritos</span></button>
+        <button class="cart-button" type="button" data-action="cart" aria-label="Abrir carrito"><i data-icon="cart"></i><span>Mi carrito</span><b id="cart-count">0</b></button>
+      </div>
+    </div>
+    <nav aria-label="Navegación principal">
+      <div class="wrap nav-inner">
+        <button class="all-nav" type="button" data-action="departments" aria-controls="departments-menu" aria-expanded="false"><i data-icon="menu"></i> Categorías</button>
+        <button type="button" data-category="">Supermercado</button>
+        <button type="button" data-category="Frescos">Frutas y verduras</button>
+        <button type="button" data-category="Carnes">Carnes y comidas</button>
+        <button type="button" data-category="Moda">Moda y calzado</button>
+        <button type="button" data-category="Electrohogar">Electrohogar</button>
+        <button type="button" data-category="Hogar">Hogar y limpieza</button>
+        <button class="offers-nav" type="button" data-action="offers"><i data-icon="tag"></i> Ofertas</button>
+      </div>
+      <div class="wrap departments-wrap"><div class="departments" id="departments-menu" hidden></div></div>
+    </nav>
+  </header>
+  <main class="wrap">
+    <section class="campaign" aria-label="Campañas de ofertas" aria-roledescription="carrusel">
+      <div class="campaign-stage">
+        <div id="campaign-slide"></div>
+        <button class="campaign-arrow previous" type="button" data-campaign-step="-1" aria-controls="campaign-slide" aria-label="Campaña anterior"><i data-icon="chevron"></i></button>
+        <button class="campaign-arrow next" type="button" data-campaign-step="1" aria-controls="campaign-slide" aria-label="Campaña siguiente"><i data-icon="chevron"></i></button>
+      </div>
+      <div id="campaign-dots" class="campaign-dots" role="group" aria-label="Elegir campaña"></div>
+      <p id="campaign-status" class="sr-only" aria-live="polite"></p>
+    </section>
+    <section class="categories" aria-labelledby="categories-title">
+      <h2 id="categories-title">Compra por categoría</h2>
+      <div class="category-grid" id="categories"></div>
+    </section>
+    <section class="deals" aria-labelledby="deals-title">
+      <div class="deals-heading">
+        <h2 id="deals-title">Ofertas destacadas</h2>
+        <button type="button" class="text-button" data-action="offers">Ver todas las ofertas <i data-icon="arrow"></i></button>
+      </div>
+      <div id="featured-deals" class="product-grid"></div>
+    </section>
+    <section id="catalogo" class="catalog" aria-labelledby="catalog-title" tabindex="-1">
+      <div class="catalog-heading">
+        <div>
+          <h2 id="catalog-title">Catálogo</h2>
+          <p id="results-count" aria-live="polite"></p>
+        </div>
+        <label class="sort-label" for="sort">Ordenar por</label>
+          <select id="sort" aria-label="Ordenar productos">
+            <option value="featured">Destacados</option>
+            <option value="low">Menor precio</option>
+            <option value="high">Mayor precio</option>
+            <option value="discount">Mayor descuento</option>
+            <option value="name">Nombre A–Z</option>
+          </select>
+      </div>
+      <div id="filters" class="catalog-filters" hidden></div>
+      <div id="products" class="product-grid"></div>
+      <div id="pagination" class="pagination" aria-label="Páginas del catálogo"></div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap footer-inner">
+      <div><strong>BlueMarket</strong><p>Proyecto académico de Programación Orientada a Objetos.</p></div>
+      <p>Precios de referencia. Stock, pagos y pedidos simulados.</p>
+    </div>
+  </footer>
+  <dialog id="panel" aria-labelledby="panel-title">
+    <div class="panel-header">
+      <h2 id="panel-title"></h2>
+      <button type="button" class="icon-button close" data-action="close" aria-label="Cerrar"><i data-icon="x"></i></button>
+    </div>
+    <div id="panel-body"></div>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

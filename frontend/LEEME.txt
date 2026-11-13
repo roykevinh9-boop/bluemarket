@@ -1,0 +1,38 @@
+BLUEMARKET · SUPERMERCADO ONLINE
+
+Extrae el ZIP completo y abre index.html en tu navegador. El catálogo y las
+fotos están incluidos. La tienda funciona sin servidor, internet ni base de
+datos. El carrito, los favoritos y los pedidos se guardan en ese navegador.
+
+Para la exposición, cambia de campaña con las flechas del inicio. Selecciona
+una foto para abrir la ficha o pulsa Ver ofertas para consultar la selección
+de ese departamento. En Electrohogar puedes filtrar por tipo de equipo.
+Abre el carrito, ajusta la cantidad y confirma el pedido con datos ficticios.
+
+Recorrido de los tres perfiles
+
+1. Registra una compra con una dirección de prueba en San Miguel.
+2. En Perfiles de demo, entra como administrador. Prepara el pedido
+   y asígnalo a Carlos Mendoza o Lucía Ramos.
+3. Cambia al perfil de repartidor y selecciona el nombre asignado.
+   Pulsa Iniciar reparto y luego Confirmar entrega.
+4. En Mis pedidos, revisa el seguimiento y abre el comprobante imprimible.
+
+Usa la misma página y el mismo navegador para los tres perfiles. Los pedidos
+confirmados se guardan localmente y sus cantidades se descuentan del stock.
+Las direcciones y los pagos del recorrido son datos de demostración.
+
+Catálogo y precios
+
+El catálogo incluye 440 fichas, entre ellas 40 electrodomésticos. Los
+precios y descuentos en soles son referencias tomadas al preparar esta
+versión. El stock, la entrega y los pagos son parte de la demostración.
+
+Archivos editables
+
+- index.html contiene la estructura de la tienda.
+- styles.css contiene el diseño para computadora y celular.
+- productos.js contiene las 440 fichas del catálogo.
+- catalogo.js contiene las categorías y la clase Producto.
+- app.js contiene el carrito, los filtros y el flujo del pedido.
+- assets contiene las fotos y la fuente Inter (licencia OFL).
